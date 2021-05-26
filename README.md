@@ -1,4 +1,4 @@
-# ecommerce_template
+# npsg_store
 
 A new Flutter project.
 

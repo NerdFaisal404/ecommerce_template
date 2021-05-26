@@ -1,15 +1,19 @@
-import 'package:ecommerce_template/global/text_theme.dart';
-import 'package:ecommerce_template/global/customPadding.dart';
-import 'package:ecommerce_template/global/customRectBorder.dart';
+import 'package:npsg_store/config/text_theme.dart';
+import 'package:npsg_store/global/custom_padding.dart';
+import 'package:npsg_store/global/custom_rect_border.dart';
 import 'package:flutter/material.dart';
 
+
+
+/// This widget is a custom listTile that would show the product name, image, category and price.
 class ProductListTile extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
 
     _productListTilePicture() {
       return ClipRRect(
-        borderRadius: CustomRectBorder.roundedShapeAll(10),
+        borderRadius: CustomBorderRadius.roundedShapeAll(10),
         child: Container(
           height: 80,
           width: 80,
@@ -26,11 +30,11 @@ class ProductListTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Radish Cream",
+            "Ginger Cream",
             style: TextStyles.midBold16(),
           ),
           Text(
-            "Creams",
+            "Cream",
             style: TextStyles.midBold16(color: Colors.grey),
           ),
         ],

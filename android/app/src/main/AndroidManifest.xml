@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ecommerce_template">
+    package="com.example.npsg_store">
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="ecommerce_template"
+        android:label="NPSG"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

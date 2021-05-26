@@ -1,8 +1,8 @@
-import 'package:ecommerce_template/global/text_theme.dart';
-import 'package:ecommerce_template/global/customPadding.dart';
-import 'package:ecommerce_template/global/custom_form_field.dart';
-import 'package:ecommerce_template/pages/product_pages/widgets/product_list_tile.dart';
-import 'package:ecommerce_template/pages/product_pages/widgets/product_tile_mobile.dart';
+import 'package:npsg_store/config/text_theme.dart';
+import 'package:npsg_store/global/custom_padding.dart';
+import 'package:npsg_store/global/custom_form_field.dart';
+import 'package:npsg_store/pages/product_pages/widgets/product_list_tile.dart';
+import 'package:npsg_store/pages/product_pages/widgets/product_tile_mobile.dart';
 import 'package:flutter/material.dart';
 
 class ProductPageMob extends StatefulWidget {
@@ -27,6 +27,7 @@ class _ProductPageMobState extends State<ProductPageMob> {
 
     _productPageAppbar() {
       return AppBar(
+        brightness: Brightness.dark,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -34,7 +35,7 @@ class _ProductPageMobState extends State<ProductPageMob> {
               end: Alignment.centerRight,
               colors: [
                 Colors.green[900],
-                Colors.green[700],
+                Colors.green[800],
               ],
             ),
           ),
@@ -44,8 +45,8 @@ class _ProductPageMobState extends State<ProductPageMob> {
           color: Colors.green[50],
         ),
         actions: [
-          IconButton(icon: Icon(Icons.shopping_bag_outlined), onPressed: () {}),
-          IconButton(icon: Icon(Icons.settings), onPressed: () {}),
+        
+          IconButton(icon: Icon(Icons.login_outlined), onPressed: () {Navigator.of(context).pushNamed("/login");}),
         ],
         backgroundColor: Colors.green[700],
         elevation: 0,
@@ -72,9 +73,9 @@ class _ProductPageMobState extends State<ProductPageMob> {
           },
           tabs: [
             Tab(text: 'All'),
-            Tab(text: 'Shampoo'),
-            Tab(text: 'Dyes'),
-            Tab(text: 'Conditioners'),
+            Tab(text: 'Clenser'),
+            Tab(text: 'Oils'),
+            Tab(text: 'Creams'),
           ],
         ),
       );

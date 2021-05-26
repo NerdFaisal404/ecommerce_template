@@ -1,8 +1,11 @@
-import 'package:ecommerce_template/pages/auth_pages/view/login_page.dart';
-import 'package:ecommerce_template/pages/auth_pages/view/register_page.dart';
-import 'package:ecommerce_template/pages/bottom_nav_bar.dart';
-import 'package:ecommerce_template/pages/product_pages/view/product_page.dart';
-import 'package:ecommerce_template/pages/product_pages/view/product_page_mob.dart';
+import 'package:npsg_store/pages/auth_pages/view/login_page.dart';
+import 'package:npsg_store/pages/auth_pages/view/register_page.dart';
+import 'package:npsg_store/pages/bottom_nav_bar.dart';
+import 'package:npsg_store/pages/cart/view/cart_page.dart';
+import 'package:npsg_store/pages/order_pages/view/order_page.dart';
+import 'package:npsg_store/pages/product_pages/view/product_details.dart';
+
+import 'package:npsg_store/pages/product_pages/view/product_page_second.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -20,32 +23,32 @@ class ApplicationRoutes {
 
   static var allProductsHandler =
       Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    return ProductPageMob();
+    return ProductPageTwo();
   });
 
-  static var widget1 =
+  static var trackOrderHandler =
       Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    return Widget1();
+    return TrackOrder();
   });
 
-  static var widget2 =
+  static var cartPageHandler =
       Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    return Widget2();
+    return CartPage();
   });
 
   static var widget3 =
       Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    return Widget3();
+    return ProductDetails();
   });
 
    static var test =
       Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    return MyStatefulWidget();
+    return BottomNavBar();
   });
 
 
   static defineRoutes() {
-     router.define("/a",
+     router.define("/",
         handler: test, transitionType: TransitionType.fadeIn);
     router.define("/products",
         handler: allProductsHandler, transitionType: TransitionType.fadeIn);
@@ -53,11 +56,11 @@ class ApplicationRoutes {
         handler: loginHandler, transitionType: TransitionType.fadeIn);
     router.define("/register",
         handler: registerHandler, transitionType: TransitionType.fadeIn);
-    router.define("/wd1",
-        handler: widget1, transitionType: TransitionType.fadeIn);
-    router.define("/wd2",
-        handler: widget2, transitionType: TransitionType.fadeIn);
-    router.define("/wd3",
-        handler: widget3, transitionType: TransitionType.fadeIn);
+    router.define("/tracking",
+        handler: trackOrderHandler, transitionType: TransitionType.fadeIn);
+    router.define("/cart",
+        handler: cartPageHandler, transitionType: TransitionType.fadeIn);
+    // router.define("/wd3",
+    //     handler: widget3, transitionType: TransitionType.fadeIn);
   }
 }

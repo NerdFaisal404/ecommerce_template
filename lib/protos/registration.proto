@@ -1,0 +1,252 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package com.univapay.mlm.grpc.api.registration;
+
+import "google/protobuf/timestamp.proto";
+import "protos/domain.proto";
+
+
+
+
+service RegistrationService {
+    rpc validateIntroducer (IntroducerValidationRequest) returns (IntroducerValidationResponse);
+    rpc validateIntroducerAndPosition (IntroducerAndPositionValidationRequest) returns (IntroducerAndPositionValidationResponse);
+    rpc validateBcIntroducer (IntroducerValidationRequest) returns (IntroducerValidationResponse);
+    rpc validateBcIntroducerAndPosition (IntroducerAndPositionValidationRequest) returns (IntroducerAndPositionValidationResponse);
+    rpc validateCitizenId (CitizenIdValidationRequest) returns (GenericValidationResult);
+    rpc validateAge (AgeValidationRequest) returns (GenericValidationResult);
+    rpc getMemberStartProductList (MemberStartProductListingRequest) returns (MemberStartProductListingResponse);
+    rpc getMemberStartPlanList (MemberStartPlanListingRequest) returns (MemberStartPlanListingResponse);
+    rpc getBcStartProductList (BcStartProductListingRequest) returns (BcStartProductListingResponse);
+    rpc getBcStartPlanList (BcStartPlanListingRequest) returns (BcStartPlanListingResponse);
+    rpc getStartDeliveryMethod (StartDeliveryMethodListingRequest) returns (StartDeliveryMethodListingResponse);
+    rpc confirmMemberRegistration (MemberRegistrationMessage) returns (RegistrationConfirmationResponse);
+    rpc registerMember (MemberRegistrationRequest) returns (MemberRegistrationResponse);
+    rpc confirmBcRegistration (BcRegistrationMessage) returns (RegistrationConfirmationResponse);
+    rpc registerBc (BcRegistrationRequest) returns (BcRegistrationResponse);
+    rpc createIntroductionCode (IntroductionCodeCreationRequest) returns (IntroductionCodeCreationResponse);
+    rpc getIntroductionInformation (IntroductionInformationRequest) returns (IntroductionInformationResponse);
+}
+
+message MemberRegistrationRequest {
+    MemberRegistrationMessage memberRegistrationMessage = 1;
+    string transactionToken = 2; //optional  : Gyro-n Transaction Token
+}
+
+message MemberRegistrationResponse {
+    string memberId = 1;
+    RegistratioResult result = 2;
+    string paymentBankAccountNumber = 3;
+    string paymentDueDate = 4;
+}
+
+message BcRegistrationRequest {
+    BcRegistrationMessage bcRegistrationMessage = 1;
+    int64 memberCreditCardId = 2;//optional
+}
+
+message BcRegistrationResponse {
+    string bcNo = 1;
+    RegistratioResult result = 2;
+    string paymentBankAccountNumber = 3;
+    string paymentDueDate = 4;
+}
+
+message RegistratioResult {
+    enum RegistrationStatus {
+        OK = 0;
+        NG = 1;
+        SETTLEMENT_FAILURE = 2;
+    }
+    RegistrationStatus status = 1;
+    string errorDescription = 2;
+}
+
+message MemberRegistrationMessage {
+    SiteCode site = 1;
+    string introducerMemberId = 2;
+    string introducerBcNo = 3;
+    string positionMemberId = 4; //optional
+    string positionBcNo = 5; //optional
+    AccountType accountType = 6;
+    string citizenId = 7;
+    string memberName = 8;
+    string memberNameKana = 22; //optional
+    int32 birthYear = 9;
+    int32 birthMonth = 10;
+    int32 birthDay = 11;
+    string mobilePhoneNumber = 12;
+    string representativeName = 13; //optional
+    string representativeCitizenId = 14; //optional
+    string password = 15;
+    string emailAddress = 16;
+    Address address = 17;
+    int64 deliveryTimeId = 18; //定期購入配送時間
+    int64 firstShipmentDeliveryTimeId = 24; //optional(初回配送時間)
+    string startPlanId = 19;
+    int64 deliveryMethodId = 20;
+    string verificationCode = 21;
+    MemberType memberType = 23; //optional
+    int64 countryId = 25; //optional (国籍)
+    string phoneNumber = 26; //optional
+    int64 repeatOrderPaymentMethodId = 27; //optional
+    MoneyType paymentMethod = 28;
+    EinvoiceCarrier einvoiceCarrier = 29;
+    string introductionCode = 30;
+}
+
+message BcRegistrationMessage {
+    bool introduceByMyself = 1;
+    string introducerMemberId = 2;
+    string introducerBcNo = 3;
+    string positionMemberId = 4;
+    string positionBcNo = 5;
+    bool deliveryAddressSameAsBc001 = 6;
+    string mobilePhoneNumber = 7;
+    Address address = 8;
+    int64 deliveryTimeId = 9;
+    string startPlanId = 10;
+    int64 deliveryMethodId = 11;
+    MemberType memberType = 12; //optional
+    int64 repeatOrderPaymentMethodId = 13; //optional
+    MoneyType paymentMethod = 14;
+    EinvoiceCarrier einvoiceCarrier = 15;
+}
+
+message RegistrationConfirmationResult {
+    enum RegistrationConfirmationStatus {
+        OK = 0;
+        NG = 1;
+    }
+    RegistrationConfirmationStatus status = 1;
+    string errorDescription = 2;
+}
+
+message RegistrationConfirmationResponse {
+    RegistrationConfirmationResult result = 1;
+    double subTotal = 2;
+    double totalFee = 3;
+    double totalPrice = 4;
+    double totalDiscount = 5;
+}
+
+
+message IntroducerValidationRequest {
+    SiteCode site = 1;
+    string introducerMemberId = 2;
+    string introducerBcNo = 3;
+    MemberType memberType = 4; //optional
+    string introducerMemberName = 5; //optional
+}
+
+message IntroducerValidationResponse {
+    GenericValidationResult result = 1;
+    string introducerMemberName = 2;
+}
+
+message IntroducerAndPositionValidationRequest {
+    SiteCode site = 1;
+    string introducerMemberId = 2;
+    string introducerBcNo = 3;
+    string positionMemberId = 4;
+    string positionBcNo = 5;
+    MemberType memberType = 6; //optional
+    string introducerMemberName = 7; //optional
+    string positionMemberName = 8; //optional
+}
+
+message IntroducerAndPositionValidationResponse {
+    GenericValidationResult result = 1;
+    string introducerMemberName = 2;
+    string positionMemberName = 3;
+}
+
+message CitizenIdValidationRequest {
+    SiteCode site = 1;
+    AccountType accountType = 2;
+    string citizenId = 3;
+    MemberType memberType = 4;
+}
+
+message AgeValidationRequest {
+    SiteCode site = 1;
+    int32 birthYear = 2;
+    int32 birthMonth = 3;
+    int32 birthDay = 4;
+    MemberType memberType = 5; //optional
+}
+
+message MemberStartProductListingRequest {
+    SiteCode site = 1;
+    MemberType memberType = 2; //optional
+}
+
+message MemberStartProductListingResponse {
+    repeated Product products = 1;
+}
+
+message MemberStartPlanListingRequest {
+    SiteCode site = 1;
+    int64 startProductId = 2;
+    MemberType memberType = 3; //optional
+}
+
+message MemberStartPlanListingResponse {
+    repeated StartPlan startPlans = 1;
+}
+
+message BcStartProductListingRequest {
+    SiteCode site = 1;
+    MemberType memberType = 2; //optional
+}
+
+message BcStartProductListingResponse {
+    repeated Product products = 1;
+}
+
+message BcStartPlanListingRequest {
+    int64 startProductId = 1;
+    MemberType memberType = 2; //optional
+}
+
+message BcStartPlanListingResponse {
+    repeated StartPlan startPlans = 1;
+}
+
+message StartDeliveryMethodListingRequest {
+    SiteCode site = 1;
+}
+
+message StartDeliveryMethodListingResponse {
+    repeated DeliveryMethod deliveryMethods = 1;
+}
+
+message IntroductionCodeCreationRequest {
+    string introducerMemberId = 1;
+    string introducerBcNo = 2;
+    string positionMemberId = 3;
+    string positionBcNo = 4;
+}
+
+message IntroductionCodeCreationResponse {
+    string introductionCode = 1;
+    string expirationDate = 2;
+}
+
+message IntroductionInformationRequest {
+    string introductionCode = 1;
+}
+
+message IntroductionInformationResponse {
+    bool availability = 1;
+    string expirationDate = 2;
+    string introducerMemberName = 3;
+    string introducerMemberId = 4;
+    string introducerBcNo = 5;
+    string positionMemberName = 6;
+    string positionMemberId = 7;
+    string positionBcNo = 8;
+    double discountPrice = 9;
+}
+

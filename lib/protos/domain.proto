@@ -1,0 +1,404 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package com.univapay.mlm.grpc.api;
+
+enum SiteCode {
+    NONE = 0;
+    JP = 1;
+    TW = 2;
+    HK = 3;
+    SG = 4;
+    MY = 5;
+    KR = 6;
+    ID = 7;
+    NN = 8;
+    GL = 9;
+    UT = 10;
+    TH = 11;
+    US = 12;
+    PH = 13;
+    VN = 14;
+    BN = 15;
+}
+
+enum OptionContractType {
+    _NO_CONTRACT = 0;
+    FAN_CLUB = 1;
+    FANS_TV = 2;
+    KHACHIK_CHECKER = 3;
+}
+
+message OptionContractPlan {
+    int64 optionContractId = 1;
+    OptionContractType optionContractType = 2;
+    OptionPlanType optionPlanType = 3;
+    double price = 4;
+    int64 trialDays = 5;
+    string planName = 6;
+}
+
+enum OptionPlanType {
+    _NO_PLAN = 0;
+    TRIAL_PLAN = 1;
+    WEEK_PLAN = 2;
+    MONTH_PLAN = 3;
+    YEAR_PLAN = 4;
+}
+
+message EinvoiceCarrier {
+    enum EinvoiceCarrierType {
+        NONE_ = 0;
+        MEMBERSHIP = 1; //会員制
+        MOBILE = 2; //携帯バーコード
+        ID_CARD = 3; //自然人カード
+
+        // PRINT = 4;
+
+        DONATION = 5; // 寄付
+    }
+    EinvoiceCarrierType carrierType = 1;
+    string einvoiceCarrierId = 2;
+}
+
+
+
+enum MemberType {
+    HCA = 0;
+    HCB = 1;
+    HCC = 2;
+    USL = 3;
+    PF = 4;
+}
+
+message Site {
+    SiteCode code = 1;
+    string locale = 2;
+}
+
+enum MoneyType {
+    CASH = 0;
+    CREDIT_CARD_WEB = 40;
+    CREDIT_CARD = 41;
+    VIRTUAL_BANK_ACCOUNT = 21;
+
+}
+
+enum DeliveryType {
+    NORMAL_DELIVERY = 0;
+    STORE_DELIVERY = 300;
+}
+
+message GenericValidationResult {
+    enum ValidationStatus {
+        OK = 0;
+        NG = 1;
+        ALREADY_EXISTS = 2;
+        INVALID_FORMAT = 3;
+    }
+    ValidationStatus status = 1;
+    string errorDescription = 2;
+}
+
+message GenericResponse {
+    enum ResponseStatus {
+        SUCCESS = 0;
+        ERROR = 1;
+    }
+    ResponseStatus status = 1;
+    string errorDescription = 2;
+}
+
+message Member {
+    string memberId = 1;
+    string memberName = 2;
+    string mobilePhoneNumber = 3;
+    string emailAddress = 4;
+    AccountType accountType = 5;
+    string representativeName = 6;
+    string supporterMobilePhone = 7;
+    bool summitMember = 8;
+    bool cfcMember = 9;
+    EinvoiceCarrier einvoiceCarrier = 10;
+    string birthDate = 11; //yyyy/MM/dd
+    Site site = 12;
+    SexType sex = 13;
+    MemberType memberType = 14;
+}
+
+message MemberProperty {
+    bool summitMember = 1;
+    bool cfcMember = 2;
+    bool millionaire = 3;
+    bool tenMillionaire = 4;
+    string fanClubExpirationDate = 5;
+}
+
+message EntitlementBonusStatus {
+    Bc bc = 1;
+    int64 totalSpirit = 2;
+    string spiritDate = 3;
+}
+
+message Bc {
+    string memberId = 1;
+    string bcNo = 2;
+    string registrationDate = 3; //yyyy/MM/dd
+    BcStatus status = 4;
+    bool deliveryAddressSameAsBc001 = 5;
+    string mobilePhoneNumber = 6;
+    int64 prefectureId = 7;
+    string address = 8;
+    int64 deliveryTimeId = 9;
+    string introducerMemberId = 10;
+    string introducerMemberName = 11;
+    string introducerBcNo = 12;
+    string positionMemberId = 13;
+    string positionMemberName = 14;
+    string positionBcNo = 15;
+    string prefectureName = 16;
+    string deliveryTimeName = 17;
+    bool subscriptionContract = 18; //新12M24M契約 有無
+    int64 paymentMethodId = 19;
+    string paymentMethodName = 20;
+    Member member = 21;
+    int64 currentMonthPurchasePoint = 22; //当月購入Point
+    int64 nextMonthPurchasePoint = 23; //翌月購入Point
+    string contractEstablishedDate = 24; //契約成立日
+    DeliveryType deliveryType = 25;
+    Store deliveryStore = 26;
+}
+
+enum BcStatus {
+    VALID = 0; //有効
+    INVALID = 1; //有効期限切れ
+    TERMINATED = 2; //解約済
+    PROVISIONAL = 3; //仮登録状態
+}
+
+enum AccountType {
+    INDIVIDUAL = 0; //個人
+    CORPORATION = 1; //法人
+    FOREIGNER = 2; //外国人
+    CORPORATION_REPRESENTATIVE = 3; //法人代表者
+}
+
+
+message LimitDateDefinition {
+    string termStart = 1; //yyyy/MM/dd
+    string termEnd = 2;
+}
+
+message Country {
+    int64 countryId = 1;
+    string name = 2;
+}
+
+message Prefecture {
+    int64 prefectureId = 1;
+    string name = 2;
+}
+
+message Address {
+    string zipCode = 1; //optional
+    int64 prefectureId = 2;
+    string address = 3;
+}
+
+message SalesItem {
+    int64 itemId = 1;
+}
+
+message LimitDate {
+    string limitDate = 1; // yyyy/MM/dd
+    LimitDateStatus status = 2;
+    bool bcRegistrationDate = 3;
+    bool today = 4;
+    enum LimitDateStatus {
+        NONE = 0;
+        VALID = 1;
+        VALID_EXPECT = 2;
+        INVALID = 3;
+    }
+}
+
+message MemberCreditCard {
+    CardBrand brand = 1;
+    string maskedCardNo = 2; //cardNoから名称変更
+    int32 expireYear = 3;
+    int32 expireMonth = 4;
+    string holderName = 5;
+    enum CardBrand {
+        VISA = 0;
+        MASTER = 1;
+        JCB = 2;
+    }
+    int64 memberCreditCardId = 7;
+    bool selected = 8;
+    bool expired = 9;
+}
+
+message RepeatOrder {
+    string categoryName = 1; //goods category
+    int64 repeatProductId = 2;
+    string productName = 3;
+    double price = 4;
+    double bonusPoint = 5;
+    int32 orderCount = 6; //個数
+    bool repeatOrder = 7; //都度定期
+    bool stopOrder = 8; //休止設定
+    bool subscriptionContract = 9; //新12M24M契約
+    string subscriptionContractName = 10; //契約名 12M 24M
+}
+
+message PaymentMethod {
+    int64 paymentMethodId = 1;
+    string paymentMethodName = 2;
+    //bool selected = 3;
+}
+
+message DeliveryTime {
+    int64 deliveryTimeId = 1;
+    string deliveryTimeName = 2;
+    //bool selected = 3;
+}
+
+message DeliveryMethod {
+    int64 deliveryMethodId = 1;
+    string name = 2;
+}
+
+enum MemberDocumentCategory {
+    ID_FRONT = 0;
+    ID_BACK = 1;
+    BANK_ACCOUNT = 2;
+    APPLICATION = 3; // 申請書
+    PERSONAL_DATA_CONSENT = 4; //個人情報同意
+    PARENTAL_CONSENT = 5; // 保護者同意
+}
+
+enum MemberDocumentStatus {
+    UNREGISTER = 0;
+    REGISTERED = 1;
+    CONFIRMED = 2;
+}
+message MemberDocument {
+    MemberDocumentCategory category = 1;
+    MemberDocumentStatus status = 2;
+}
+
+message StartPlan {
+    string startPlanId = 1; // subscriptionPlan.subscription_cd+":"+salesItemId
+    string startPlanName = 2;
+    double itemPrice = 3;
+    double totalFee = 4;
+    double totalPrice = 5;
+    int32 months = 6;
+    int32 totalPoint = 7;
+    int64 productId = 8;
+    bool contractFlag = 9;
+}
+
+message OrderProduct {
+    Product product = 1;
+    int32 currentOrderYear = 2;
+    int32 currentOrderMonth = 3;
+    string currentOrderValidTermStart = 4; //yyyy/MM/dd
+    string currentOrderValidTermEnd = 5; //yyyy/MM/dd
+    int32 nextOrderYear = 6;
+    int32 nextOrderMonth = 7;
+    string nextOrderValidTermStart = 8; //yyyy/MM/dd
+    string nextOrderValidTermEnd = 9; //yyyy/MM/dd
+}
+
+message ProductGenre {
+    int64 genreId = 1;
+    string genreName = 2; //e.g.「養身」、「美身」、「潔身」
+}
+
+message ProductCategory {
+    int64 categoryId = 1;
+    string categoryName = 2;
+}
+
+message Product {
+    ProductGenre genre = 1;
+    Site site = 2;
+    int64 productId = 3;
+    double price = 4;
+    int32 point = 5;
+    string productName = 6;
+}
+
+message Order {
+    string orderId = 1;
+    PaymentMethod paymentMethod = 2;
+    string orderTime = 3; //  yyyy/MM/dd hh:mm:ss  (e.g. 2014/01/23 21:00:23)
+    string shipmentTrackingNo = 4;
+    bool orderComplete = 5; //order status 1/4
+    bool paymentComplete = 6; //order status 2/4
+    int32 totalShipmentCount = 7;
+    int32 shippedCount = 8; //order status 3/4 = shippedCount / totalShipmentCount
+    int32 deliveredCount = 9; //order status 4/4 = deliveredCount / totalShipmentCount
+    int32 totalPickUpCount = 10;
+    int32 pickedUpCount = 11;
+    string bcNo = 12;
+    string recipientName = 13;
+    string mobilePhoneNumber = 14;
+    Address deliveryAddress = 15;
+    DeliveryTime deliveryTime = 16;
+    repeated OrderDetail orderDetailList = 17;
+    repeated Coupon couponList = 18;
+    double shipmentFee = 19;
+    double totalPrice = 20;
+    double bonusPoint = 21;
+    string paymentBankAccountNumber = 22;
+    string paymentDueDate = 23;
+    DeliveryType deliveryType = 24;
+    Store deliveryStore = 25;
+    OrderPlace orderPlace = 26;
+    Site site = 27;
+}
+
+message OrderPlace {
+    string orderPlaceCode = 1;
+    string orderPlaceName = 2;
+}
+
+message Store {
+    string storeCode = 1;
+    string storeName = 2;
+}
+
+message OrderDetail {
+    Product product = 1;
+    int32 orderCount = 2;
+    int32 orderYear = 3;
+    int32 orderMonth = 4;
+    string orderValidTermStart = 5; // yyyy/MM/dd
+    string orderValidTermEnd = 6; // yyyy/MM/dd
+}
+
+
+message Coupon {
+    int64 couponId = 1;
+    string couponName = 2;
+    double discountPrice = 3;
+    string memberId = 4;
+    string issueDate = 5; // yyyy/MM/dd
+    string expirationDate = 6; // yyyy/MM/dd
+    string usingDate = 7; // yyyy/MM/dd
+}
+
+
+message PagingRequest {
+    int32 offset = 1; // >= 0
+    int32 limit = 2;
+}
+
+
+enum SexType {
+    _NO_SEX = 0;
+    FEMALE = 1;
+    MALE = 2;
+}

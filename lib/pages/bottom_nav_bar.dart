@@ -1,107 +1,93 @@
-import 'package:ecommerce_template/config/routes.dart';
+
+import 'package:npsg_store/pages/buy/view/application_form_view/applicationForm.dart';
+
 import 'package:flutter/material.dart';
 
 
-
-
-
-
-
-
-
-
-
-
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key key}) : super(key: key);
-
+class BottomNavBar extends StatefulWidget {
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+  _BottomNavBarState createState() => _BottomNavBarState();
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
-  String intialRoute = "/wd1";
-  final _navigatorKey = GlobalKey<NavigatorState>();
-  static List<Widget> _widgetOptions = <Widget>[
-    Widget1(),
-    Widget2(),
-    Widget3(),
-  ];
+class _BottomNavBarState extends State<BottomNavBar> {
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
 
-      intialRoute = "/wd" + (index + 1).toString();
-      _navigatorKey.currentState.pushReplacementNamed(intialRoute);
-    });
+  PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Navigator(
-          key: _navigatorKey,
-          initialRoute: "/wd1",
-          onGenerateRoute: ApplicationRoutes.router.generator),
-      bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: Colors.red,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.business),
-              label: 'Business',
-              backgroundColor: Colors.green,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              label: 'School',
-              backgroundColor: Colors.purple,
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          onTap: (index) {
-            _onItemTapped(index);
-          }),
-    );
-  }
-}
 
-class Widget1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Widget 1"),
-      ),
+      appBar: AppBar(),
+      body: TextButton(child: Text("Form"), onPressed: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterForm()));
+      },),
     );
-  }
-}
-
-class Widget2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Widget 2"),
-      ),
-    );
-  }
-}
-
-class Widget3 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Widget 3"),
-      ),
-    );
+    // return Scaffold(
+    //   extendBody: true,
+    //   body: PageView(
+    //       physics: NeverScrollableScrollPhysics(),
+    //       controller: _pageController,
+    //       onPageChanged: (index) {
+    //         setState(() => _currentIndex = index);
+    //       },
+    //       children: [RegisterForm(), TrackOrder(), CartPage()]),
+    //   bottomNavigationBar: ClipRect(
+    //     child: BackdropFilter(
+    //       filter:  ui.ImageFilter.blur(
+    //         sigmaX: 6.0,
+    //         sigmaY: 6.0,
+    //       ),
+    //       child: BottomNavyBar(
+            
+    //         backgroundColor: Colors.white.withOpacity(0.8),
+    //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //         selectedIndex: _currentIndex,
+    //         showElevation: true,
+    //         itemCornerRadius: 10,
+          
+    //         curve: Curves.linear,
+    //         onItemSelected: (index) {
+    //           setState(() => _currentIndex = index);
+    //           _pageController.animateToPage(index, duration: Duration(milliseconds : 300), curve: Curves.easeOut);
+    //         },
+    //         items: <BottomNavyBarItem>[
+    //           BottomNavyBarItem(
+    //             icon: Icon(Icons.shopping_bag_outlined),
+    //             title: Text('Products'),
+    //             activeColor: Colors.green[900],
+    //             textAlign: TextAlign.center,
+    //           ),
+    //           BottomNavyBarItem(
+    //             icon: Icon(Icons.track_changes_outlined),
+    //             title: Text('Orders'),
+    //             activeColor: Colors.green[900],
+    //             textAlign: TextAlign.center,
+    //           ),
+    //           BottomNavyBarItem(
+    //             icon: Icon(Icons.shopping_cart_outlined),
+    //             title: Text(
+    //               'Cart',
+    //             ),
+    //             activeColor: Colors.green[900],
+    //             textAlign: TextAlign.center,
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }

@@ -1,9 +1,17 @@
-import 'package:ecommerce_template/config/routes.dart';
+import 'package:npsg_store/config/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
   ApplicationRoutes.defineRoutes();
-  runApp(MyApp());
+    runApp(
+    // For widgets to be able to read providers, we need to wrap the entire
+    // application in a "ProviderScope" widget.
+    // This is where the state of our providers will be stored.
+    ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +30,7 @@ class MyApp extends StatelessWidget {
         accentColor: Color(0xff1D1C1C),
         primarySwatch: Colors.blue,
       ),
-      initialRoute: "/login",
+      initialRoute: "/",
       onGenerateRoute: ApplicationRoutes.router.generator,
     );
   }

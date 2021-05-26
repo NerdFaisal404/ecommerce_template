@@ -1,0 +1,24 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package com.univapay.mlm.grpc.api.system;
+
+import "google/protobuf/timestamp.proto";
+
+// システム情報取得サービス
+service SystemService {
+    // 次回のシステムメンテナンス時間の取得
+    rpc getNextMaintenanceWindow (MaintenanceWindowRequest) returns (MaintenanceWindow);
+}
+
+message MaintenanceWindowRequest {
+}
+
+// メンテナンス時間帯
+message MaintenanceWindow {
+    google.protobuf.Timestamp from = 1;
+    google.protobuf.Timestamp to = 2;
+    // 何時間前にメンテナンス表示するか
+    int32 maintenanceDisplayBeforeHours = 3;
+}
+

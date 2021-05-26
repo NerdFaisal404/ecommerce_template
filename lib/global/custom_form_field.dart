@@ -1,5 +1,5 @@
-import 'package:ecommerce_template/global/text_theme.dart';
-import 'package:ecommerce_template/global/customRectBorder.dart';
+import 'package:npsg_store/config/text_theme.dart';
+import 'package:npsg_store/global/custom_rect_border.dart';
 import 'package:flutter/material.dart';
 
 class CustomFormFields {
@@ -29,20 +29,21 @@ class CustomFormFields {
 
   //this text form field has is curved on the top left and bottom right
   static rectBorderFormField({
-    @required bool obscureText,
-    @required IconData prefixIcon,
-    @required TextInputType textInputType,
+    bool obscureText,
+     IconData prefixIcon,
+     TextInputType textInputType,
+     int maxLength,
     @required String hintText,
     @required Function(String) onTextChanged,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextFormField(
-        obscureText: obscureText,
+        obscureText: obscureText ?? false,
         maxLines: 1,
         autocorrect: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        keyboardType: textInputType,
+        keyboardType: textInputType ?? TextInputType.text,
         onChanged: (value) {
           onTextChanged(value);
         },
@@ -52,12 +53,13 @@ class CustomFormFields {
           }
           return null;
         },
+       maxLength: maxLength ?? null,
         decoration: InputDecoration(
-          prefixIcon: Icon(
+          prefixIcon:  prefixIcon != null ? Icon(
             prefixIcon,
             color: Colors.grey,
             size: 26,
-          ),
+          ) : null,
           prefixIconConstraints: BoxConstraints(
             minHeight: 50,
             minWidth: 50,

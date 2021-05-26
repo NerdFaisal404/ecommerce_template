@@ -1,0 +1,328 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package com.univapay.mlm.grpc.api.member;
+
+import "google/protobuf/timestamp.proto";
+import "protos/domain.proto";
+
+
+
+
+service MemberService {
+    rpc getPrefectureList (PrefectureListingRequest) returns (PrefectureListingResponse);
+    rpc getCountryList (CountryListingRequest) returns (CountryListingResponse);
+    rpc getLoginMember (LoginMemberRequest) returns (Member);
+    rpc verifyMemberProfile (MemberProfileVerificationRequest) returns (MemberProfileVerificationResponse);
+    rpc updateEmailAddress (EmailAddressUpdateRequest) returns (EmailAddressUpdateResponse);
+    rpc updateMobilePhoneNumber (MobilePhoneNumberUpdateRequest) returns (MobilePhoneNumberUpdateResponse);
+    rpc getBc (BcRequest) returns (Bc);
+    rpc getMemberCreditCardList (MemberCreditCardListingRequest) returns (MemberCreditCardListingResponse);
+    rpc selectDefaultMemberCreditCard (DefaultMemberCreditRequest) returns (DefaultMemberCreditResponse);
+    rpc addMemberCreditCard (MemberCreditCardAdditionalRequest) returns (MemberCreditCardAdditionalResponse);
+    rpc deleteMemberCreditCard (MemberCreditCardDeleteRequest) returns (MemberCreditCardDeleteResponse);
+    rpc updateBcDeliveryAddress (BcDeliveryAddressUpdateRequest) returns (BcDeliveryAddressUpdateResponse);
+    rpc getRepeatOrderList (RepeatOrderListingRequest) returns (RepeatOrderListingResponse);
+    rpc getRepeatOrderPaymentMethodList (RepeatOrderPaymentMethodListingRequest) returns (RepeatOrderPaymentMethodListingResponse);
+    rpc getRepeatOrderPaymentMethodListBySite (RepeatOrderPaymentMethodListingBySiteRequest) returns (RepeatOrderPaymentMethodListingResponse);
+    rpc getDeliveryTimeList (DeliveryTimeListingRequest) returns (DeliveryTimeListingResponse);
+    rpc updateRepeatOrder (RepeatOrderUpdateRequest) returns (RepeatOrderUpdateResponse);
+    rpc updateSupporterMobilePhone (SupporterUpdateRequest) returns (SupporterUpdateResponse);
+    rpc getBcList (BcListingRequest) returns (BcListingResponse);
+    rpc getLimitDateList (LimitDateListingRequest) returns (LimitDateListingResponse);
+    rpc getMonthlyLimitDateDefinition (LimitDateDefinitionRequest) returns (LimitDateDefinitionResponse);
+    rpc getOrganizationStatus (OrganizationStatusRequest) returns (OrganizationStatusResponse);
+    rpc getMemberCouponList (MemberCouponListingRequest) returns (CouponListingResponse);
+    rpc getCouponList (CouponListingRequest) returns (CouponListingResponse);
+    rpc getAutoCancelList (AutoCancelListingRequest) returns (AutoCancelListingResponse);
+    rpc validateEinvoiceCarrier (EinvoiceCarrier) returns (EinvoiceCarrierValidationResponse);
+    rpc getMemberProperty (MemberPropertyRequest) returns (MemberProperty);
+    rpc getMemberOptionContract (MemberOptionContractRequest) returns (MemberOptionContractResponse);
+}
+
+message MemberOptionContractRequest {
+}
+
+message MemberOptionContractResponse{
+    repeated MemberOptionContract contracts = 1;
+}
+
+message MemberOptionContract{
+    OptionContractPlan optionContractPlan = 1;
+    string contractBaseDate = 2;
+    string contractEndDate = 3;
+    bool autoRenewal = 4;
+}
+
+message MemberPropertyRequest {
+}
+
+service MemberDocumentService {
+    rpc getMemberDocumentList (MemberDocumentListingRequest) returns (MemberDocumentListingResponse);
+    rpc uploadMemberDocument (MemberDocumentUploadRequest) returns (MemberDocument);
+}
+
+message MemberCreditCardDeleteRequest {
+    int64 memberCreditCardId = 1;
+}
+
+message MemberCreditCardDeleteResponse {
+    enum MemberCreditCardDeleteResult {
+        SUCCESS = 0;
+        ERROR = 1;
+    }
+    MemberCreditCardDeleteResult status = 1;
+    string errorDescription = 2;
+}
+
+message OrganizationStatusRequest {
+    string bcNo = 1;
+    string query = 2; //optional
+}
+
+message OrganizationStatusResponse {
+    int32 positionCountL = 1;
+    int32 positionCountR = 2;
+    int32 validPositionCountL = 3;
+    int32 validPositionCountR = 4;
+    repeated OrganizationPosition positionList = 5;
+    string registration_date = 6; // yyyy/MM/dd
+}
+
+message LimitDateDefinitionRequest {
+    string bcNo = 1;
+}
+
+message LimitDateDefinitionResponse {
+    LimitDateDefinition currentMonth = 1;
+    LimitDateDefinition nextMonth = 2;
+}
+
+message LimitDateListingRequest {
+    string bcNo = 1;
+}
+
+message LimitDateListingResponse {
+    repeated LimitDate limitDateList = 1;
+}
+
+message BcListingRequest {
+
+}
+
+message BcListingResponse {
+    repeated Bc bcList = 1;
+}
+
+message SupporterUpdateRequest {
+    string mobilePhoneNumber = 1;
+}
+
+message SupporterUpdateResponse {
+
+}
+
+message DeliveryTimeListingRequest {
+    string bcNo = 1;
+}
+
+message DeliveryTimeListingResponse {
+    repeated DeliveryTime deliveryTimes = 1;
+    int64 selectedDeliveryTimeId = 2;
+}
+
+message RepeatOrderUpdateRequest {
+    string bcNo = 1;
+    repeated RepeatOrderSetting updates = 2;
+    int64 paymentMethodId = 3;
+    int64 deliveryTimeId = 4;
+    DeliveryType deliveryType = 5;
+    string deliveryStoreCode = 6;//optional
+}
+
+message RepeatOrderSetting {
+    int64 repeatProductId = 1;
+    int32 orderCount = 2;
+    bool repeatOrder = 3; //false:都度, true:定期
+}
+
+message RepeatOrderUpdateResponse {
+
+}
+
+message RepeatOrderPaymentMethodListingRequest {
+    string bcNo = 1;
+}
+
+message RepeatOrderPaymentMethodListingBySiteRequest {
+    SiteCode site = 1;
+}
+
+message RepeatOrderPaymentMethodListingResponse {
+    repeated PaymentMethod paymentMethodList = 1;
+    int64 selectedPaymentMethodId = 2;
+}
+
+message RepeatOrderListingRequest {
+    string bcNo = 1;
+}
+
+message RepeatOrderListingResponse {
+    repeated RepeatOrder repeatOrders = 1;
+}
+
+message BcDeliveryAddressUpdateRequest {
+    string bcNo = 1;
+    bool deliveryAddressSameAsBc001 = 2;
+    string mobilePhoneNumber = 3;
+    Address address = 4; //optional
+    int64 deliveryTimeId = 5;
+    int64 paymentMethodId = 6; //optional
+}
+
+message BcDeliveryAddressUpdateResponse {
+
+}
+
+message BcRequest {
+    string bcNo = 1;
+}
+
+message MemberCreditCardListingRequest {
+    string bcNo = 1;
+}
+
+message MemberCreditCardListingResponse {
+    repeated MemberCreditCard memberCreditCards = 1;
+}
+
+message DefaultMemberCreditRequest {
+    string bcNo = 1;
+    int64 memberCreditCardId = 2;
+}
+
+message DefaultMemberCreditResponse {
+
+}
+
+message MemberCreditCardAdditionalRequest {
+    string bcNo = 1;
+    string transactionToken = 2;
+}
+
+message MemberCreditCardAdditionalResponse {
+
+}
+
+message MemberDocumentListingRequest {
+    string bcNo = 1;//optional  空の場合"001"
+}
+
+message MemberDocumentListingResponse {
+    repeated MemberDocument documents = 1;
+}
+
+message MemberDocumentUploadRequest {
+    bytes documentData = 1;
+    MemberDocumentCategory category = 2;
+    string bcNo = 3; //optional  空の場合"001"
+}
+
+message MemberProfileVerificationRequest {
+    string memberId = 1;
+    string citizenId = 2;
+    int32 birthYear = 3;
+    int32 birthMonth = 4;
+    int32 birthDay = 5;
+}
+
+message MemberProfileVerificationResponse {
+    enum MemberProfileVerificationStatus {
+        OK = 0;
+        NG = 1;
+    }
+    MemberProfileVerificationStatus status = 1;
+    string errorDescription = 2;
+}
+
+message LoginMemberRequest {
+}
+
+message PrefectureListingRequest {
+    SiteCode site = 1;
+}
+
+message PrefectureListingResponse {
+    repeated Prefecture prefectures = 1;
+}
+
+message CountryListingRequest {
+    SiteCode site = 1;
+}
+
+message CountryListingResponse {
+    repeated Country prefectures = 1;
+}
+
+message EmailAddressUpdateRequest {
+    string emailAddress = 1;
+}
+
+message EmailAddressUpdateResponse {
+}
+
+message MobilePhoneNumberUpdateRequest {
+    string mobilePhoneNumber = 1;
+    string verificationCode = 2;
+}
+
+message MobilePhoneNumberUpdateResponse {
+    enum VerificationStatus {
+        SUCCESS = 0;
+        ERROR = 1;
+    }
+    VerificationStatus status = 1;
+    string errorDescription = 2;
+}
+
+message UpdateRepeatOrderRequest {
+    string bcNo = 1;
+    repeated RepeatOrder updates = 2;
+    int64 paymentMethodId = 3;
+}
+
+message OrganizationPosition {
+    int32 level = 1; // [1,2,3]
+    int32 position = 2; // level=1->[1], level=2->[1,2] , level=3 -> [1,2,3,4]
+    Bc bc = 3;
+}
+
+message MemberCouponListingRequest {
+}
+
+message CouponListingResponse {
+    repeated Coupon coupons = 1;
+}
+
+message CouponListingRequest {
+    string issueDateStart = 1; // yyyy/MM/dd
+    string issueDateEnd = 2; // yyyy/MM/dd
+}
+
+message AutoCancelListingRequest {
+    SiteCode site = 1;
+    int32 daysUntilTermination = 2;
+}
+
+message AutoCancelListingResponse {
+    repeated Bc bc = 1;
+}
+
+message EinvoiceCarrierValidationResponse {
+    enum EinvoiceCarrierValidationResult {
+        SUCCESS = 0;
+        ERROR = 1;
+    }
+    EinvoiceCarrierValidationResult result = 1;
+    string errorDescription = 2;
+}

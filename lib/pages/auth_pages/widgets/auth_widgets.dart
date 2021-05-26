@@ -1,4 +1,4 @@
-import 'package:ecommerce_template/global/text_theme.dart';
+import 'package:npsg_store/config/text_theme.dart';
 import 'package:flutter/material.dart';
 
 class AuthWidgets {

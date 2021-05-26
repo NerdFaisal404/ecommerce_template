@@ -1,10 +1,10 @@
-import 'package:ecommerce_template/animations/wave_animation.dart';
-import 'package:ecommerce_template/global/text_theme.dart';
-import 'package:ecommerce_template/global/breakpoints.dart';
-import 'package:ecommerce_template/global/customPadding.dart';
-import 'package:ecommerce_template/global/customRectBorder.dart';
-import 'package:ecommerce_template/global/custom_form_field.dart';
-import 'package:ecommerce_template/pages/auth_pages/widgets/auth_widgets.dart';
+import 'package:npsg_store/animations/wave_animation.dart';
+import 'package:npsg_store/config/text_theme.dart';
+import 'package:npsg_store/global/breakpoints.dart';
+import 'package:npsg_store/global/custom_padding.dart';
+import 'package:npsg_store/global/custom_rect_border.dart';
+import 'package:npsg_store/global/custom_form_field.dart';
+import 'package:npsg_store/pages/auth_pages/widgets/auth_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -30,9 +30,11 @@ class _LoginPageState extends State<LoginPage> {
     _loginPageAppbar() {
       return AppBar(
         elevation:  0,
+        brightness: Brightness.dark,
         backgroundColor: Colors.green[900],
+        iconTheme: IconThemeData(color: Colors.green[50]),
         actions: size.width > 700 ? AuthWidgets.appbarActions(context) : [],
-        title: Text("Welcome to Naturally Plus", style: TextStyles.noBold18(color: Colors.white)),
+        title: Text("Welcome to Naturally Plus", style: TextStyles.highBold18(color: Colors.green[50])),
       );
     }
 

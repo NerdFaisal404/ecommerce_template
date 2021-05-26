@@ -65,7 +65,6 @@ class _ImageTransitionState extends State<ImageTransition>
   @override
   Widget build(BuildContext context) {
     ///reads the screen sizes and allocates them to a variable
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
     ///OverFlowBox, important to restrict image to given constraints

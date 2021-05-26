@@ -1,0 +1,133 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package com.univapay.mlm.grpc.api.auth;
+
+import "protos/domain.proto";
+
+
+
+
+
+service AuthService {
+    rpc login (LoginRequest) returns (LoginResponse);
+    rpc staffLogin (StaffLoginRequest) returns (StaffLoginResponse);
+    rpc accessToken(AccessTokenRequest) returns (AccessTokenResponse);
+}
+
+service PasswordService {
+    rpc confirmPassword (PasswordConfirmationRequest) returns (GenericValidationResult);
+    rpc changePassword (PasswordChangeRequest) returns (GenericResponse);
+    rpc validatePasswordFormat (PasswordValidationRequest) returns (GenericValidationResult);
+    rpc requestPasswordReset (PasswordResetRequest) returns (PasswordResetResponse);
+    rpc renewPassword (PasswordRenewalRequest) returns (PasswordRenewalResult);
+}
+
+message PasswordResetRequest {
+    string memberId = 1;
+}
+
+message PasswordConfirmationRequest {
+    string password = 1;
+}
+
+message PasswordChangeRequest {
+    string currentPassword = 1;
+    string newPassword = 2;
+}
+
+message PasswordResetResponse {
+    enum PasswordResetStatus {
+        SENT_SMS = 0;
+        NOT_AUTHORIZED = 1;
+        MEMBER_NOT_FOUND = 2;
+    }
+    PasswordResetStatus status = 1;
+}
+
+message PasswordRenewalRequest {
+    string memberId = 1;
+    string password = 2;
+    string verificationCode = 3;
+    string mobilePhoneNumber = 4; //optional
+    string citizenId = 5; //optional
+    int32 birthYear = 6; //optional
+    int32 birthMonth = 7; //optional
+    int32 birthDay = 8; //optional
+}
+
+message PasswordRenewalResult {
+    GenericValidationResult result = 1;
+}
+
+message LoginRequest {
+    string loginId = 1;
+    string password = 2;
+}
+
+message LoginResponse {
+    string accessToken = 1;
+}
+
+message StaffLoginRequest {
+    string loginId = 1;
+    string password = 2;
+}
+
+message StaffLoginResponse {
+    string accessToken = 1;
+    string staffName = 2;
+}
+
+message AccessTokenRequest {
+    string temporaryToken = 1;
+}
+
+message AccessTokenResponse {
+    string accessToken = 1;
+}
+
+service SmsService {
+    rpc sendSms (SmsRequest) returns (SmsResponse);
+    rpc sendSmsForPasswordReset (MemberSmsRequest) returns (SmsResponse);
+    rpc sendSmsForSmsMobileUpdate (MemberSmsRequest) returns (SmsResponse);
+    rpc verifySmsCode (SmsVerificationRequest) returns (GenericValidationResult);
+    rpc verifyMemberSmsCode (MemberSmsVerificationRequest) returns (GenericValidationResult);
+}
+
+message SmsRequest {
+    SiteCode site = 1;
+    string mobilePhoneNumber = 2;
+    MemberType memberType = 3; //optional
+}
+
+message SmsResponse {
+    enum SmsResult {
+        SUCCESS = 0;
+        ERROR = 1;
+        NUMBER_ALREADY_REGISTERED = 2;
+    }
+    SmsResult result = 1;
+}
+
+message MemberSmsRequest {
+    string memberId = 1;
+    string mobilePhoneNumber = 2;
+}
+
+message MemberSmsVerificationRequest {
+    string memberId = 1;
+    string verificationCode = 2;
+}
+
+message SmsVerificationRequest {
+	SiteCode site = 1;
+    string mobilePhoneNumber = 2;
+    string verificationCode = 3;
+    MemberType memberType = 4; //optional
+}
+
+message PasswordValidationRequest {
+    string password = 1;
+}
+

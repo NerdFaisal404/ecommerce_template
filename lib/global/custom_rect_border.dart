@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-class CustomRectBorder {
+
+
+
+class CustomBorderRadius{
+
 
  static BorderRadius roundedShapeAll(double radius) {
     return BorderRadius.all(
@@ -8,7 +12,13 @@ class CustomRectBorder {
     );
   }
 
+}
 
+
+class CustomRectBorder {
+
+
+///All sided rectangle borded taking in [radius]
 static  RoundedRectangleBorder roundedRectangleBorderAll(double radius) {
     return RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
@@ -17,6 +27,8 @@ static  RoundedRectangleBorder roundedRectangleBorderAll(double radius) {
     );
   }
 
+
+///Allow more customization for each edgle
  static RoundedRectangleBorder roundedRectangleBorderOnly(
       {double topLeft,
       double bottomLeft,
